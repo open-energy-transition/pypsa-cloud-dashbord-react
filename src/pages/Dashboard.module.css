@@ -1,0 +1,35 @@
+.top_bar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info_container {
+  margin-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.info_btn_container {
+  display: flex;
+}
+
+.conatiner_margin {
+  margin-top: 0.5rem;
+}
+
+.jobs_table_layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.job_btn {
+  position: relative !important;
+  display: block !important;
+  margin-top: 3rem !important;
+  margin: 30rem;
+  left: 85%;
+}

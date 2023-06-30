@@ -1,0 +1,12 @@
+.tab_layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  overflow: hidden;
+  padding: 30%;
+}
+.icon_layout {
+  transform: scale(3);
+}
