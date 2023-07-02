@@ -4,12 +4,11 @@ import styles from "./Login.module.css";
 import { Button, Typography } from "@mui/material";
 
 const Login = () => {
-  const navigate = useNavigate();
+  const BASE_BACKEND_URL = process.env.REACT_APP_BASE_BACKEND_URL;
 
   const authHandler = () => {
-    console.log("rsgseg");
     // navigate();
-    window.location.replace("http://localhost:3001/auth/google");
+    window.location.replace(`${BASE_BACKEND_URL}/auth/google`);
   };
 
   return (

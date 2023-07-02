@@ -32,28 +32,21 @@ const Dashboard = () => {
       withCredentials: true,
       credentials: "include",
     });
-    user_data_req
-      .post("http://localhost:3001/fileDump/submitworkflow", {
-        job_id: selectedJob._id,
-      })
-      .then((res) => {
-        console.log(res.data);
-      });
+    user_data_req.post("/fileDump/submitworkflow", {
+      job_id: selectedJob._id,
+    });
   };
 
   useEffect(() => {
-    console.log(cookies.jwt);
-    const headers = { Authorization: `Bearer ${cookies.jwt}` };
+    // const headers = { Authorization: `Bearer ${cookies.jwt}` };
     const user_data_req = axios.create({
       withCredentials: true,
-      baseURL: "http://localhost:3001/getDetails",
       credentials: "include",
     });
     user_data_req
-      .get()
+      .get("/getDetails")
       .then((res) => {
         setUser(res.data);
-        console.log(res.data);
       })
       .then(() => {
         getAllJobs();
@@ -61,8 +54,6 @@ const Dashboard = () => {
   }, []);
 
   React.useEffect(() => {
-    console.log(selectedRows);
-
     if (selectedRows.length === 1) {
       setSelectedJob(jobsData.filter((job) => job.name === selectedRows[0])[0]);
     } else {
@@ -71,7 +62,6 @@ const Dashboard = () => {
   }, [selectedRows]);
 
   React.useEffect(() => {
-    console.log(selectedJob);
     if (selectedJob) {
       if (
         selectedJob.config &&
@@ -90,16 +80,14 @@ const Dashboard = () => {
   function getAllJobs() {
     const user_data_req = axios.create({
       withCredentials: true,
-      baseURL: "http://localhost:3001/fileDump/userId",
       credentials: "include",
     });
-    user_data_req.get().then((res) => {
+    user_data_req.get("/fileDump/userId").then((res) => {
       if (res.data.length === 0) {
         setJobsData(null);
       } else {
         setJobsData(res.data);
       }
-      console.log(res.data);
       setSelectedRows([]);
     });
   }

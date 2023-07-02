@@ -135,7 +135,7 @@ export default function JobsTableCheckbox({
 
     file_dump_req
       .post(
-        "http://localhost:3001/fileDump/name/delete",
+        "/fileDump/name/delete",
         { job_names: selected },
         {
           Accept: "application/json",
@@ -143,8 +143,6 @@ export default function JobsTableCheckbox({
         }
       )
       .then((res) => {
-        console.log("deleted jobs");
-        console.log(res.data);
         getAllJobs();
       });
   }

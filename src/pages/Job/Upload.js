@@ -33,16 +33,13 @@ const Upload = ({ fileName, content, jobData, updateJobData }) => {
       });
 
       file_dump_req
-        .post(`http://localhost:3001/fileDump/upload/config`, formData, {
+        .post(`/fileDump/upload/config`, formData, {
           Accept: "application/json",
           "content-type": "multipart/form-data",
           params: { file_name: only_file_name, job_id: jobData._id },
         })
         .then((res) => {
-          console.log(res.data);
-          console.log(res.status);
           if (res.status == 200) {
-            console.log("file uploaded");
             // trigger rerender
             updateJobData();
           }

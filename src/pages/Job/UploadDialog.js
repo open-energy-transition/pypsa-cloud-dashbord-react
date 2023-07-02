@@ -71,7 +71,7 @@ export default function CustomizedDialogs({
 
       file_dump_req
         .post(
-          "http://localhost:3001/fileDump/name",
+          "/fileDump/name",
           { jobName: typedName },
           {
             Accept: "application/json",
@@ -79,8 +79,6 @@ export default function CustomizedDialogs({
           }
         )
         .then((res) => {
-          console.log("job created");
-          console.log(res.data);
           setJobData(res.data);
         });
     } catch (error) {
@@ -96,14 +94,12 @@ export default function CustomizedDialogs({
       });
 
       file_dump_req
-        .get("http://localhost:3001/fileDump/name", {
+        .get("/fileDump/name", {
           Accept: "application/json",
           "content-type": "application/json",
           params: { jobName: jobData.name },
         })
         .then((res) => {
-          console.log("updated data");
-          console.log(res.data[0]);
           setJobData(res.data[0]);
         });
     } catch (error) {
