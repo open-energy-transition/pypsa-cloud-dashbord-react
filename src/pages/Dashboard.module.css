@@ -26,17 +26,12 @@
   margin-top: 1rem;
 }
 
-.job_btn {
-  position: relative !important;
-  display: block !important;
-  margin-top: 3rem !important;
-  margin: 30rem;
-  left: 85%;
+.btn_bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 2rem;
+  margin-top: 2rem;
 }
-.solve_btn {
-  position: relative !important;
-  display: block !important;
-  margin-top: 3rem !important;
-  margin: 30rem;
-  left: 65%;
+.job_btn {
+  margin-right: 4rem;
 }

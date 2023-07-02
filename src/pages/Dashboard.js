@@ -135,23 +135,30 @@ const Dashboard = () => {
             </Button>
           </div>
         </div>
-        <Button
-          variant="contained"
-          disabled={!enableSolve}
-          onClick={solveHandler}
-          className={styles.job_btn}
-        >
-          solve
-        </Button>
-        <Button
-          onClick={() => {
-            setUploadDialogOpen(true);
-          }}
-          variant="contained"
-          className={styles.job_btn}
-        >
-          {selectedJob !== null ? "Update Job" : "Create Job"}
-        </Button>
+        <div className={styles.btn_bar}>
+          <Button
+            variant="contained"
+            disabled={!enableSolve}
+            onClick={solveHandler}
+            sx={{
+              "&.Mui-disabled": {
+                background: "#eaeaea",
+                color: "#c0c0c0",
+              },
+            }}
+          >
+            solve
+          </Button>
+          <Button
+            onClick={() => {
+              setUploadDialogOpen(true);
+            }}
+            variant="contained"
+            className={styles.job_btn}
+          >
+            {selectedJob !== null ? "Update Job" : "Create Job"}
+          </Button>
+        </div>
         <CustomizedDialogs
           getAllJobs={getAllJobs}
           open={uploadDialogOpen}
