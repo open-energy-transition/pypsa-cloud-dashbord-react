@@ -18,11 +18,27 @@ const Dashboard = () => {
 
   const [selectedJob, setSelectedJob] = React.useState(null);
 
+  const [enableSolve, setEnableSolve] = useState(false);
+
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
 
   const signOutHandler = () => {
     removeCookie("jwt");
     navigate("/");
+  };
+
+  const solveHandler = () => {
+    const user_data_req = axios.create({
+      withCredentials: true,
+      credentials: "include",
+    });
+    user_data_req
+      .post("http://localhost:3001/fileDump/submitworkflow", {
+        job_id: selectedJob._id,
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
   };
 
   useEffect(() => {
@@ -56,6 +72,19 @@ const Dashboard = () => {
 
   React.useEffect(() => {
     console.log(selectedJob);
+    if (selectedJob) {
+      if (
+        selectedJob.config &&
+        selectedJob.bundle_config &&
+        selectedJob.powerplantmatching_config
+      ) {
+        setEnableSolve(true);
+      } else {
+        setEnableSolve(false);
+      }
+    } else {
+      setEnableSolve(false);
+    }
   }, [selectedJob]);
 
   function getAllJobs() {
@@ -106,6 +135,14 @@ const Dashboard = () => {
             </Button>
           </div>
         </div>
+        <Button
+          variant="contained"
+          disabled={!enableSolve}
+          onClick={solveHandler}
+          className={styles.job_btn}
+        >
+          solve
+        </Button>
         <Button
           onClick={() => {
             setUploadDialogOpen(true);

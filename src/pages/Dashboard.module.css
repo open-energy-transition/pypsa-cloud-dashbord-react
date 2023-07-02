@@ -33,3 +33,10 @@
   margin: 30rem;
   left: 85%;
 }
+.solve_btn {
+  position: relative !important;
+  display: block !important;
+  margin-top: 3rem !important;
+  margin: 30rem;
+  left: 65%;
+}
