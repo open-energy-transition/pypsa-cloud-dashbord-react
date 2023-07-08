@@ -4,8 +4,9 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 import { Button, Typography } from "@mui/material";
-import CustomizedDialogs from "./Job/UploadDialog";
 import JobsTableCheckbox from "./JobsTableCheckbox";
+import CreateJob from "./CreateJob";
+import { Buffer } from "buffer";
 
 const Dashboard = () => {
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -16,33 +17,17 @@ const Dashboard = () => {
 
   const [selectedRows, setSelectedRows] = useState([]);
 
-  const [selectedJob, setSelectedJob] = React.useState(null);
-
-  const [enableSolve, setEnableSolve] = useState(false);
-
-  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
-
   const signOutHandler = () => {
     removeCookie("jwt");
     navigate("/");
   };
 
-  const solveHandler = () => {
-    const user_data_req = axios.create({
-      withCredentials: true,
-      credentials: "include",
-    });
-    user_data_req.post("/fileDump/submitworkflow", {
-      job_id: selectedJob._id,
-    });
-  };
-
   useEffect(() => {
-    // const headers = { Authorization: `Bearer ${cookies.jwt}` };
     const user_data_req = axios.create({
       withCredentials: true,
       credentials: "include",
     });
+    console.log("i ran");
     user_data_req
       .get("/getDetails")
       .then((res) => {
@@ -54,41 +39,48 @@ const Dashboard = () => {
   }, []);
 
   React.useEffect(() => {
-    if (selectedRows.length === 1) {
-      setSelectedJob(jobsData.filter((job) => job.name === selectedRows[0])[0]);
-    } else {
-      setSelectedJob(null);
-    }
+    console.log("selectedRows: ", selectedRows);
   }, [selectedRows]);
-
-  React.useEffect(() => {
-    if (selectedJob) {
-      if (
-        selectedJob.config &&
-        selectedJob.bundle_config &&
-        selectedJob.powerplantmatching_config
-      ) {
-        setEnableSolve(true);
-      } else {
-        setEnableSolve(false);
-      }
-    } else {
-      setEnableSolve(false);
-    }
-  }, [selectedJob]);
 
   function getAllJobs() {
     const user_data_req = axios.create({
       withCredentials: true,
       credentials: "include",
     });
+
     user_data_req.get("/fileDump/userId").then((res) => {
       if (res.data.length === 0) {
         setJobsData(null);
       } else {
         setJobsData(res.data);
       }
+      console.log(res.data);
       setSelectedRows([]);
+    });
+  }
+
+  function getAllResults() {
+    const user_data_req = axios.create({
+      withCredentials: true,
+      credentials: "include",
+    });
+
+    user_data_req.get("/download/getResults").then((res) => {
+      console.log("res.data: ", res.data[0]);
+
+      const nodeJSBuffer = res.data[0];
+
+      const buffer = Buffer.from(nodeJSBuffer);
+      const blob = new Blob([buffer]);
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+      a.href = url;
+      a.download = "filename.zip";
+      a.click();
+      window.URL.revokeObjectURL(url);
     });
   }
 
@@ -123,37 +115,10 @@ const Dashboard = () => {
             </Button>
           </div>
         </div>
-        <div className={styles.btn_bar}>
-          <Button
-            variant="contained"
-            disabled={!enableSolve}
-            onClick={solveHandler}
-            sx={{
-              "&.Mui-disabled": {
-                background: "#eaeaea",
-                color: "#c0c0c0",
-              },
-            }}
-          >
-            solve
-          </Button>
-          <Button
-            onClick={() => {
-              setUploadDialogOpen(true);
-            }}
-            variant="contained"
-            className={styles.job_btn}
-          >
-            {selectedJob !== null ? "Update Job" : "Create Job"}
-          </Button>
-        </div>
-        <CustomizedDialogs
-          getAllJobs={getAllJobs}
-          open={uploadDialogOpen}
-          setOpen={setUploadDialogOpen}
-          jobData={selectedJob}
-          setJobData={setSelectedJob}
-        />
+        <Button variant="contained" onClick={getAllResults}>
+          wfw
+        </Button>
+        <CreateJob refreshHome={getAllJobs} />
         {jobsData ? (
           <div className={styles.jobs_table_layout}>
             <JobsTableCheckbox

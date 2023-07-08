@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
@@ -50,16 +49,16 @@ function BootstrapDialogTitle(props) {
 export default function CustomizedDialogs({
   open,
   setOpen,
-  getAllJobs,
-  jobData,
-  setJobData,
+  refreshHome,
+  initialJobData,
 }) {
   const [typedName, setTypedName] = React.useState("");
+  const [jobData, setJobData] = React.useState(initialJobData);
 
   const handleClose = () => {
     setOpen(false);
-    getAllJobs();
     setTypedName("");
+    refreshHome();
   };
 
   const handleJobCreate = () => {
@@ -80,27 +79,6 @@ export default function CustomizedDialogs({
         )
         .then((res) => {
           setJobData(res.data);
-        });
-    } catch (error) {
-      console.error("Failed to create job.");
-    }
-  };
-
-  const updateJobData = () => {
-    try {
-      const file_dump_req = axios.create({
-        withCredentials: true,
-        credentials: "include",
-      });
-
-      file_dump_req
-        .get("/fileDump/name", {
-          Accept: "application/json",
-          "content-type": "application/json",
-          params: { jobName: jobData.name },
-        })
-        .then((res) => {
-          setJobData(res.data[0]);
         });
     } catch (error) {
       console.error("Failed to create job.");
@@ -129,7 +107,7 @@ export default function CustomizedDialogs({
       </BootstrapDialogTitle>
       {jobData ? (
         <DialogContent className={styles.dialog_content_name}>
-          <BasicTabs jobData={jobData} updateJobData={updateJobData} />
+          <BasicTabs jobData={jobData} setJobData={setJobData} />
         </DialogContent>
       ) : (
         <DialogContent className={styles.dialog_content_name}>

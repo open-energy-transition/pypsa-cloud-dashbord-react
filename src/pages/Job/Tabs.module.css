@@ -5,7 +5,9 @@
   justify-content: center;
   gap: 2rem;
   overflow: hidden;
-  padding: 30%;
+  padding-top: 30%;
+  padding-bottom: 30%;
+  width: 100%;
 }
 .icon_layout {
   transform: scale(3);

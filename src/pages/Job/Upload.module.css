@@ -18,3 +18,15 @@
   gap: 2rem;
   overflow: hidden;
 }
+.drag_drop_filled {
+  width: 33vw;
+  height: 23vh;
+  border: 1px solid gray;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background-color: gray;
+}

@@ -35,7 +35,7 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs({ jobData, updateJobData }) {
+export default function BasicTabs({ jobData, setJobData }) {
   const [value, setValue] = React.useState(0);
   const [_unused, _setUnused] = React.useState(0);
 
@@ -71,7 +71,7 @@ export default function BasicTabs({ jobData, updateJobData }) {
             fileName={UPLOAD_CONFIGS[0]}
             content={UPLOAD_CONTENT[0]}
             jobData={jobData}
-            updateJobData={updateJobData}
+            setJobData={setJobData}
             key={0}
           />
         )}
@@ -87,7 +87,7 @@ export default function BasicTabs({ jobData, updateJobData }) {
             fileName={UPLOAD_CONFIGS[1]}
             content={UPLOAD_CONTENT[1]}
             jobData={jobData}
-            updateJobData={updateJobData}
+            setJobData={setJobData}
             key={1}
           />
         )}
@@ -103,7 +103,7 @@ export default function BasicTabs({ jobData, updateJobData }) {
             fileName={UPLOAD_CONFIGS[2]}
             content={UPLOAD_CONTENT[2]}
             jobData={jobData}
-            updateJobData={updateJobData}
+            setJobData={setJobData}
             key={2}
           />
         )}

@@ -1,6 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,6 +14,8 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
+import Payment from "./Payment";
+import JobTableButton from "./JobTableButton";
 
 const headCells = [
   {
@@ -33,6 +33,10 @@ const headCells = [
   {
     id: "powerplantmatching_config",
     label: "powerplantmatching_config",
+  },
+  {
+    id: "status",
+    label: "status",
   },
 ];
 
@@ -170,9 +174,6 @@ export default function JobsTableCheckbox({
 
                 return (
                   <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.name)}
-                    role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.name}
@@ -185,6 +186,7 @@ export default function JobsTableCheckbox({
                     <EnhancedTableCell padding="checkbox">
                       <Checkbox
                         color="primary"
+                        onClick={(event) => handleClick(event, row.name)}
                         checked={isItemSelected}
                         inputProps={{
                           "aria-labelledby": labelId,
@@ -199,14 +201,18 @@ export default function JobsTableCheckbox({
                     >
                       {row.name}
                     </EnhancedTableCell>
-                    <EnhancedTableCell align="right">
+                    <EnhancedTableCell align="center">
                       {row.config ? <p>yes</p> : <p>no</p>}
                     </EnhancedTableCell>
-                    <EnhancedTableCell align="right">
+                    <EnhancedTableCell align="center">
                       {row.bundle_config ? <p>yes</p> : <p>no</p>}
                     </EnhancedTableCell>
-                    <EnhancedTableCell align="right">
+                    <EnhancedTableCell align="center">
                       {row.powerplantmatching_config ? <p>yes</p> : <p>no</p>}
+                    </EnhancedTableCell>
+                    <EnhancedTableCell align="center">
+                      {row.status}
+                      {<JobTableButton jobData={row} getAllJobs={getAllJobs} />}
                     </EnhancedTableCell>
                   </TableRow>
                 );
