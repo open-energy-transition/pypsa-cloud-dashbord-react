@@ -72,6 +72,42 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
               return temp;
             });
           }
+          console.log("copied config", res.data);
+        });
+    } catch (error) {
+      console.error("Failed to submit files.");
+    }
+  };
+
+  const handleDefaultSubmit = async (e) => {
+    setUploading(true);
+    e.preventDefault();
+
+    try {
+      const file_dump_req = axios.create({
+        withCredentials: true,
+        credentials: "include",
+      });
+
+      file_dump_req
+        .post(
+          `/fileDump/upload/config/default`,
+          {},
+          {
+            Accept: "application/json",
+            "content-type": "multipart/form-data",
+            params: { file_name: only_file_name, job_id: jobData._id },
+          }
+        )
+        .then((res) => {
+          if (res.status == 200) {
+            setJobData((prev) => {
+              const temp = { ...prev };
+              temp[only_file_name] = true;
+              return temp;
+            });
+          }
+          console.log("copied config", res.data);
         });
     } catch (error) {
       console.error("Failed to submit files.");
@@ -79,6 +115,7 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
   };
 
   useEffect(() => {
+    console.log("files", files);
     if (files.length !== 0) {
       const ftype = files[0].name.split(".").at(-1);
       console.log("sadas", ftype);
@@ -119,9 +156,11 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
             handleDragDropEvent(e);
             setFiles(e, "w");
           }}
-          className={enableUpload ? styles.drag_drop_filled : styles.drag_drop}
+          className={
+            files.length !== 0 ? styles.drag_drop_filled : styles.drag_drop
+          }
         >
-          {enableUpload ? (
+          {files.length !== 0 ? (
             <>
               <Typography
                 variant="h8"
@@ -131,6 +170,19 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
               >
                 {files[0].name} has been uploaded
               </Typography>
+              <Button
+                variant="outlined"
+                component="span"
+                display="block"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  // setEnableUpload(false)
+                  clearAllFiles();
+                }}
+              >
+                delete file
+              </Button>
             </>
           ) : (
             <>
@@ -164,16 +216,31 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
           )}
         </div>
 
-        <div className={styles.submit_btn}>
+        <div className={styles.btn_bar}>
           <LoadingButton
             variant="contained"
             component="span"
+            color="primary"
             onClick={handleSubmit}
             disabled={!enableUpload}
             loading={uploading}
           >
-            upload file
+            upload custom file
           </LoadingButton>
+          {only_file_name !== "config" ? (
+            <LoadingButton
+              variant="contained"
+              component="span"
+              color="primary"
+              onClick={handleDefaultSubmit}
+              loading={uploading}
+              disabled={enableUpload}
+            >
+              upload default file
+            </LoadingButton>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
       <Snackbar

@@ -66,9 +66,9 @@ const Dashboard = () => {
     });
 
     user_data_req.get("/download/getResults").then((res) => {
-      console.log("res.data: ", res.data[0]);
+      console.log("res.data: ", res.data);
 
-      const nodeJSBuffer = res.data[0];
+      const nodeJSBuffer = res.data.zip_buffer;
 
       const buffer = Buffer.from(nodeJSBuffer);
       const blob = new Blob([buffer]);

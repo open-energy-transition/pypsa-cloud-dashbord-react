@@ -7,6 +7,10 @@ import Upload from "./Upload";
 import { UPLOAD_CONFIGS, UPLOAD_CONTENT } from "../../configuration/CONFIG";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import styles from "./Tabs.module.css";
+import { Button } from "@mui/material";
+import axios from "axios";
+import { LoadingButton } from "@mui/lab";
+import { Buffer } from "buffer";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -38,12 +42,43 @@ function a11yProps(index) {
 export default function BasicTabs({ jobData, setJobData }) {
   const [value, setValue] = React.useState(0);
   const [_unused, _setUnused] = React.useState(0);
-
+  const [downloading, setDownloading] = React.useState(false);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const onlyfileNames = UPLOAD_CONFIGS.map((item) => item.split(".")[0]);
+
+  function dowload_config(fileName) {
+    setDownloading(true);
+    const get_config_req = axios.create({
+      withCredentials: true,
+      credentials: "include",
+    });
+
+    get_config_req
+      .get(`/download/getConfig`, {
+        params: { file_name: fileName, job_id: jobData._id },
+      })
+      .then((res) => {
+        console.log("config data ", res.data[0]);
+
+        const nodeJSBuffer = res.data[0];
+
+        const buffer = Buffer.from(nodeJSBuffer);
+        const blob = new Blob([buffer]);
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = url;
+        a.download = `${fileName}.yaml`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        setDownloading(false);
+      });
+  }
 
   return (
     <Box>
@@ -65,6 +100,15 @@ export default function BasicTabs({ jobData, setJobData }) {
           <div className={styles.tab_layout}>
             <TaskAltIcon className={styles.icon_layout} />
             <Typography variant="h4">UPLOADED</Typography>
+            <LoadingButton
+              variant="contained"
+              loading={downloading}
+              onClick={() => {
+                dowload_config(onlyfileNames[0]);
+              }}
+            >
+              download config
+            </LoadingButton>
           </div>
         ) : (
           <Upload
@@ -81,6 +125,15 @@ export default function BasicTabs({ jobData, setJobData }) {
           <div className={styles.tab_layout}>
             <TaskAltIcon className={styles.icon_layout} />
             <Typography variant="h4">UPLOADED</Typography>
+            <LoadingButton
+              variant="contained"
+              loading={downloading}
+              onClick={() => {
+                dowload_config(onlyfileNames[1]);
+              }}
+            >
+              download config
+            </LoadingButton>
           </div>
         ) : (
           <Upload
@@ -97,6 +150,15 @@ export default function BasicTabs({ jobData, setJobData }) {
           <div className={styles.tab_layout}>
             <TaskAltIcon className={styles.icon_layout} />
             <Typography variant="h4">UPLOADED</Typography>
+            <LoadingButton
+              variant="contained"
+              loading={downloading}
+              onClick={() => {
+                dowload_config(onlyfileNames[2]);
+              }}
+            >
+              download config
+            </LoadingButton>
           </div>
         ) : (
           <Upload
