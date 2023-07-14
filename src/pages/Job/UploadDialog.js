@@ -59,6 +59,7 @@ export default function CustomizedDialogs({
     setOpen(false);
     setTypedName("");
     refreshHome();
+    setJobData(null);
   };
 
   const handleJobCreate = () => {
@@ -136,12 +137,7 @@ export default function CustomizedDialogs({
         </DialogContent>
       )}
       <DialogActions className={styles.bg_color}>
-        <Button
-          autoFocus
-          onClick={handleClose}
-          variant="outlined"
-          style={{ color: "white" }}
-        >
+        <Button autoFocus onClick={handleClose} variant="outlined">
           Save changes
         </Button>
       </DialogActions>

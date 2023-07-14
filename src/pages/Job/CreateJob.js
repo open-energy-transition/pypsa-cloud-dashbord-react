@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import React from "react";
-import CustomizedDialogs from "./Job/UploadDialog";
+import CustomizedDialogs from "./UploadDialog";
 
 const CreateJob = ({ refreshHome }) => {
   const [uploadDialogOpen, setUploadDialogOpen] = React.useState(false);
@@ -12,6 +12,11 @@ const CreateJob = ({ refreshHome }) => {
           setUploadDialogOpen(true);
         }}
         variant="contained"
+        sx={{
+          marginLeft: "30px",
+          marginTop: "1rem",
+          marginBottom: "1rem",
+        }}
       >
         Create Job
       </Button>

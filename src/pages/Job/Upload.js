@@ -6,6 +6,8 @@ import { Button, Typography } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import LoadingButton from "@mui/lab/LoadingButton";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Grid } from "@mui/material";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -30,6 +32,8 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
   const [fileType, setFileType] = React.useState(false);
 
   const [uploading, setUploading] = React.useState(false);
+
+  const [reciving, setReciving] = React.useState(false);
 
   const handleClickType = () => {
     setFileType(true);
@@ -115,7 +119,8 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
   };
 
   useEffect(() => {
-    console.log("files", files);
+    console.log("files recived", files);
+    setReciving(false);
     if (files.length !== 0) {
       const ftype = files[0].name.split(".").at(-1);
       console.log("sadas", ftype);
@@ -129,6 +134,10 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
     } else {
       setEnableUpload(false);
     }
+    return () => {
+      console.log("files recived started");
+      setReciving(true);
+    };
   }, [files]);
 
   useEffect(() => {
@@ -137,10 +146,14 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
 
   return (
     <>
-      <div className={styles.upload_layout}>
-        <Typography variant="h5" component="span" display="block" color="white">
-          {`Upload ${fileName} File`}
-        </Typography>
+      <Grid
+        container
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        gap={4}
+      >
+        <Typography variant="h5">{`Upload ${fileName} File`}</Typography>
 
         <Typography
           variant="body1"
@@ -162,56 +175,56 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
         >
           {files.length !== 0 ? (
             <>
-              <Typography
-                variant="h8"
-                component="span"
-                display="block"
-                color="white"
-              >
-                {files[0].name} has been uploaded
-              </Typography>
-              <Button
-                variant="outlined"
-                component="span"
-                display="block"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  // setEnableUpload(false)
-                  clearAllFiles();
-                }}
-              >
-                delete file
-              </Button>
+              {uploading ? (
+                <CircularProgress />
+              ) : (
+                <>
+                  <Typography variant="h8">
+                    {files[0].name} has been uploaded
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    component="span"
+                    display="block"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      clearAllFiles();
+                    }}
+                  >
+                    delete file
+                  </Button>
+                </>
+              )}
             </>
           ) : (
             <>
-              <Typography
-                variant="h8"
-                component="span"
-                display="block"
-                color="white"
-              >
-                Drag and drop files here
-              </Typography>
+              {reciving || uploading ? (
+                <CircularProgress />
+              ) : (
+                <>
+                  <Typography variant="h8">Drag and drop files here</Typography>
 
-              {/* Hide the crappy looking default HTML input */}
-              <input
-                ref={inputRef}
-                type="file"
-                multiple
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  setFiles(e, "w");
-                  inputRef.current.value = null;
-                }}
-              />
-              <Button
-                onClick={() => inputRef.current.click()}
-                variant="outlined"
-              >
-                Select File To Upload
-              </Button>
+                  {/* Hide the crappy looking default HTML input */}
+                  <input
+                    ref={inputRef}
+                    type="file"
+                    multiple
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      setReciving(true);
+                      setFiles(e, "w");
+                      inputRef.current.value = null;
+                    }}
+                  />
+                  <Button
+                    onClick={() => inputRef.current.click()}
+                    variant="outlined"
+                  >
+                    Select File To Upload
+                  </Button>
+                </>
+              )}
             </>
           )}
         </div>
@@ -236,13 +249,13 @@ const Upload = ({ fileName, content, jobData, setJobData }) => {
               loading={uploading}
               disabled={enableUpload}
             >
-              upload default file
+              use default file
             </LoadingButton>
           ) : (
             <></>
           )}
         </div>
-      </div>
+      </Grid>
       <Snackbar
         open={fileType}
         autoHideDuration={5000}
