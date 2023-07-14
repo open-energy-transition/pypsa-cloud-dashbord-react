@@ -17,11 +17,11 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: europe-central2-docker.pkg.dev/crucial-oven-386720/pypsa-workflow/frontend:v8
+        image: ${_IMAGE}
         # command: ["sh", "-c"]
         # args: ['sleep 1000']
         ports:
-        - containerPort: 80
+        - containerPort: 3000
         resources:
           limits:
             memory: "12Gi"
