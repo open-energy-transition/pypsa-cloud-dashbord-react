@@ -31,3 +31,6 @@ spec:
           value: backend-service
         - name: TEST
           value: "test"
+        envFrom:
+        - secretRef:
+            name: frontend
