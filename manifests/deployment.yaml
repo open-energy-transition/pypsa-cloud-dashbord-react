@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+  namespace: dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: europe-central2-docker.pkg.dev/crucial-oven-386720/pypsa-workflow/frontend:v8
+        # command: ["sh", "-c"]
+        # args: ['sleep 1000']
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "12Gi"
+            cpu: "6"
+        env:
+        - name: REACT_APP_BASE_BACKEND_URL 
+          value: backend-service
+        - name: TEST
+          value: "test"
