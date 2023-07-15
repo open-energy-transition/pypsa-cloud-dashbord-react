@@ -16,7 +16,7 @@ const Logger = () => {
       const token = searchParam.get("token");
       //   cookies.set("jwt", token);
       removeCookie("jwt");
-      setCookie("jwt", `${token}`);
+      setCookie("jwt", `${token}`, domain=process.env.REACT_APP_BASE_BACKEND_URL);
     }
   });
 
