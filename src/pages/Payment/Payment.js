@@ -35,7 +35,7 @@ const Payment = ({ jobData, open, setOpen }) => {
       })
       .then((res) => {
         if (res.status == 200) {
-          setCost(res.data.order_obj.amount);
+          setCost(res.data.order_obj.amount / 100);
           orderObjRef.current = res.data.order_obj;
           razorKeyRef.current = res.data.razor_key;
           console.log(res.data);
