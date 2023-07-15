@@ -15,10 +15,10 @@ const Logger = () => {
     if (searchParam.get("token")) {
       const token = searchParam.get("token");
       //   cookies.set("jwt", token);
-      removeCookie("jwt", options = {
+      removeCookie("jwt", {
         domain: process.env.REACT_APP_BASE_BACKEND_URL
       });
-      setCookie("jwt", `${token}`, options = {
+      setCookie("jwt", `${token}`, {
         domain: process.env.REACT_APP_BASE_BACKEND_URL
       });
     }

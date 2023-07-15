@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [selectedRows, setSelectedRows] = useState([]);
 
   const signOutHandler = () => {
-    removeCookie("jwt", options = {
+    removeCookie("jwt", {
       domain: process.env.REACT_APP_BASE_BACKEND_URL
     });
     navigate("/");
