@@ -68,7 +68,7 @@ const JobTableButton = ({ jobData, getAllJobs }) => {
         />
       </>
     );
-  } else if (jobData.status === "Succeed") {
+  } else if (jobData.status === "Succeeded") {
     return (
       <LoadingButton
         loading={downloading}
