@@ -28,9 +28,6 @@ spec:
             cpu: "6"
         env:
         - name: REACT_APP_BASE_BACKEND_URL 
-          value: backend-service
+          value: https://api.pypsa-earth-dashboard.com
         - name: TEST
           value: "test"
-        envFrom:
-        - secretRef:
-            name: frontend
