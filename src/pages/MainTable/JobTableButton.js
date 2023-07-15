@@ -26,6 +26,7 @@ const JobTableButton = ({ jobData, getAllJobs }) => {
       })
       .then((res) => {
         const nodeJSBuffer = res.data.zip_buffer;
+        console.log(nodeJSBuffer);
         const buffer = Buffer.from(nodeJSBuffer);
         const blob = new Blob([buffer]);
         const url = window.URL.createObjectURL(blob);
@@ -67,7 +68,7 @@ const JobTableButton = ({ jobData, getAllJobs }) => {
         />
       </>
     );
-  } else if (jobData.status === "complete") {
+  } else if (jobData.status === "Succeed") {
     return (
       <LoadingButton
         loading={downloading}
@@ -80,8 +81,6 @@ const JobTableButton = ({ jobData, getAllJobs }) => {
   } else {
     return <Typography>{jobData.status}</Typography>;
   }
-
-  return <></>;
 };
 
 export default JobTableButton;
