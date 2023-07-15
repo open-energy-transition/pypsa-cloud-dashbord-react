@@ -50,9 +50,9 @@ export default function BasicTabs({ jobData, setJobData }) {
         params: { file_name: fileName, job_id: jobData._id },
       })
       .then((res) => {
-        console.log("config data ", res.data[0]);
+        console.log("config data ", res.data);
 
-        const nodeJSBuffer = res.data[0];
+        const nodeJSBuffer = res.data;
 
         const buffer = Buffer.from(nodeJSBuffer);
         const blob = new Blob([buffer]);
