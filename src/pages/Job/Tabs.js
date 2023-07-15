@@ -71,19 +71,17 @@ export default function BasicTabs({ jobData, setJobData }) {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-          variant="fullWidth"
-          indicatorColor="primary"
-        >
-          <Tab label={UPLOAD_CONFIGS[0]} {...a11yProps(0)} key={0} />
-          <Tab label={UPLOAD_CONFIGS[1]} {...a11yProps(1)} key={1} />
-          <Tab label={UPLOAD_CONFIGS[2]} {...a11yProps(2)} key={2} />
-        </Tabs>
-      </Box>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        aria-label="basic tabs example"
+        variant="fullWidth"
+        indicatorColor="primary"
+      >
+        <Tab label={UPLOAD_CONFIGS[0]} {...a11yProps(0)} key={0} />
+        <Tab label={UPLOAD_CONFIGS[1]} {...a11yProps(1)} key={1} />
+        <Tab label={UPLOAD_CONFIGS[2]} {...a11yProps(2)} key={2} />
+      </Tabs>
 
       {value == 0 && (
         <TabPanel container>

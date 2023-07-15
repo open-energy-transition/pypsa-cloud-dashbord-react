@@ -10,7 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import styles from "./UploadDialog.module.css";
 import BasicTabs from "./Tabs";
-import { TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import axios from "axios";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -107,33 +107,39 @@ export default function CustomizedDialogs({
         # {jobData ? jobData.name : "New Job"}
       </BootstrapDialogTitle>
       {jobData ? (
-        <DialogContent className={styles.dialog_content_name}>
+        <DialogContent className={styles.bg_color}>
           <BasicTabs jobData={jobData} setJobData={setJobData} />
         </DialogContent>
       ) : (
-        <DialogContent className={styles.dialog_content_name}>
-          <Typography variant="body1">
-            Ad occaecat in nisi ut dolor dolore laboris pariatur cupidatat.
-          </Typography>
-          <TextField
-            sx={{ input: { color: "white" } }}
-            inputProps={{ style: { color: "white", fontSize: "2rem" } }}
-            InputLabelProps={{
-              style: { color: "gray" },
-            }}
-            id="name"
-            label="JOB NAME"
-            variant="filled"
-            color="primary"
-            value={typedName}
-            onChange={(e) => {
-              setTypedName(e.target.value);
-            }}
-            className={styles.text_field}
-          />
-          <Button variant="contained" onClick={handleJobCreate}>
-            submit
-          </Button>
+        <DialogContent className={styles.bg_color}>
+          <Grid
+            container
+            direction={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            gap={"3rem"}
+          >
+            <Typography variant="body1">add a name for this run.</Typography>
+            <TextField
+              sx={{ input: { color: "white" } }}
+              inputProps={{ style: { color: "white", fontSize: "2rem" } }}
+              InputLabelProps={{
+                style: { color: "gray" },
+              }}
+              id="name"
+              label="JOB NAME"
+              variant="filled"
+              color="primary"
+              value={typedName}
+              onChange={(e) => {
+                setTypedName(e.target.value);
+              }}
+              className={styles.text_field}
+            />
+            <Button variant="contained" onClick={handleJobCreate}>
+              submit
+            </Button>
+          </Grid>
         </DialogContent>
       )}
       <DialogActions className={styles.bg_color}>

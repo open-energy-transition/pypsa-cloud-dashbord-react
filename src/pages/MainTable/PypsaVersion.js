@@ -4,25 +4,25 @@ import axios from "axios";
 
 const PypsaVersion = ({ row }) => {
   const [version, setVersion] = React.useState(row.pypsa_version);
+  const [sending, setSending] = React.useState(false);
+
   const handleVersioChange = (event, row) => {
+    setSending(true);
     const version_change_req = axios.create({
       withCredentials: true,
       credentials: "include",
     });
 
     version_change_req
-      .post(
-        "/fileDump/version",
-        { job_id: row._id, pypsa_ver: event.target.value },
-        {
-          Accept: "application/json",
-          "content-type": "application/json",
-        }
-      )
+      .post("/fileDump/version", {
+        job_id: row._id,
+        pypsa_ver: event.target.value,
+      })
       .then((res) => {
-        console.log("eaffff", res);
+        console.log("recived version", res.data.pypsa_version);
+        setVersion(res.data.pypsa_version);
+        setSending(false);
       });
-    setVersion(event.target.value);
   };
 
   return (
@@ -37,6 +37,7 @@ const PypsaVersion = ({ row }) => {
         onChange={(e) => {
           handleVersioChange(e, row);
         }}
+        disabled={sending}
         MenuProps={{
           PaperProps: {
             sx: {
@@ -54,7 +55,7 @@ const PypsaVersion = ({ row }) => {
         <MenuItem value={"main"}>main</MenuItem>
         <MenuItem value={"v0.2.2"}>v0.2.2</MenuItem>
         <MenuItem value={"v0.2.1"}>v0.2.1</MenuItem>
-        <MenuItem value={"v0.0.1"}>v0.0.1</MenuItem>
+        <MenuItem value={"v0.2.0"}>v0.2.0</MenuItem>
       </Select>
     </FormControl>
   );
