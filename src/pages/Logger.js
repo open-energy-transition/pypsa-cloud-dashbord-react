@@ -16,10 +16,14 @@ const Logger = () => {
       const token = searchParam.get("token");
       //   cookies.set("jwt", token);
       removeCookie("jwt", {
-        domain: process.env.REACT_APP_BASE_BACKEND_URL
+        domain: process.env.REACT_APP_BASE_BACKEND_URL,
+        sameSite: false,
+        secure: true
       });
       setCookie("jwt", `${token}`, {
-        domain: process.env.REACT_APP_BASE_BACKEND_URL
+        domain: process.env.REACT_APP_BASE_BACKEND_URL,
+        sameSite: false,
+        secure: true
       });
     }
   });
