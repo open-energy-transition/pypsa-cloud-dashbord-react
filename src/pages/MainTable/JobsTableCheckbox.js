@@ -14,13 +14,20 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
-import Payment from "./Payment";
 import JobTableButton from "./JobTableButton";
-
+import CloseIcon from "@mui/icons-material/Close";
+import { Close } from "@mui/icons-material";
+import CheckIcon from "@mui/icons-material/Check";
+import { FormControl, Select, MenuItem, InputLabel } from "@mui/material";
+import PypsaVersion from "./PypsaVersion";
 const headCells = [
   {
     id: "name",
     label: "Job Name",
+  },
+  {
+    id: "pypsa_version",
+    label: "PYPSA version",
   },
   {
     id: "config",
@@ -28,11 +35,11 @@ const headCells = [
   },
   {
     id: "bundle_config",
-    label: "bundle_config",
+    label: "bundle",
   },
   {
     id: "powerplantmatching_config",
-    label: "powerplantmatching_config",
+    label: "powerplantmatching",
   },
   {
     id: "status",
@@ -44,13 +51,9 @@ function EnhancedTableHead(props) {
   return (
     <TableHead sx={{ borderBottom: "1px solid gray" }}>
       <TableRow>
-        <EnhancedTableCell padding="checkbox"></EnhancedTableCell>
+        <TableCell sx={{ width: "2% " }}></TableCell>
         {headCells.map((headCell) => (
-          <EnhancedTableCell
-            key={headCell.id}
-            align={"left"}
-            padding={"normal"}
-          >
+          <EnhancedTableCell key={headCell.id} align={"left"}>
             {headCell.label}
           </EnhancedTableCell>
         ))}
@@ -61,7 +64,7 @@ function EnhancedTableHead(props) {
 
 function EnhancedTableCell(props) {
   return (
-    <TableCell sx={{ color: "white" }} {...props}>
+    <TableCell sx={{ color: "white", width: "15%" }} {...props}>
       {props.children}
     </TableCell>
   );
@@ -183,7 +186,12 @@ export default function JobsTableCheckbox({
                       borderBottom: "1px solid darkgray",
                     }}
                   >
-                    <EnhancedTableCell padding="checkbox">
+                    <TableCell
+                      sx={{
+                        width: "2%",
+                      }}
+                      padding="checkbox"
+                    >
                       <Checkbox
                         color="primary"
                         onClick={(event) => handleClick(event, row.name)}
@@ -192,26 +200,35 @@ export default function JobsTableCheckbox({
                           "aria-labelledby": labelId,
                         }}
                       />
-                    </EnhancedTableCell>
-                    <EnhancedTableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
+                    </TableCell>
+                    <EnhancedTableCell component="th" id={labelId} scope="row">
                       {row.name}
                     </EnhancedTableCell>
-                    <EnhancedTableCell align="center">
-                      {row.config ? <p>yes</p> : <p>no</p>}
+                    <EnhancedTableCell>
+                      <PypsaVersion row={row} />
                     </EnhancedTableCell>
-                    <EnhancedTableCell align="center">
-                      {row.bundle_config ? <p>yes</p> : <p>no</p>}
+                    <EnhancedTableCell align="left">
+                      {row.config ? (
+                        <CheckIcon sx={{ fontSize: 30 }} />
+                      ) : (
+                        <CloseIcon sx={{ fontSize: 30 }} />
+                      )}
                     </EnhancedTableCell>
-                    <EnhancedTableCell align="center">
-                      {row.powerplantmatching_config ? <p>yes</p> : <p>no</p>}
+                    <EnhancedTableCell align="left">
+                      {row.bundle_config ? (
+                        <CheckIcon sx={{ fontSize: 30 }} />
+                      ) : (
+                        <CloseIcon sx={{ fontSize: 30 }} />
+                      )}
                     </EnhancedTableCell>
-                    <EnhancedTableCell align="center">
-                      {row.status}
+                    <EnhancedTableCell align="left">
+                      {row.powerplantmatching_config ? (
+                        <CheckIcon sx={{ fontSize: 30 }} />
+                      ) : (
+                        <CloseIcon sx={{ fontSize: 30 }} />
+                      )}
+                    </EnhancedTableCell>
+                    <EnhancedTableCell align="left">
                       {<JobTableButton jobData={row} getAllJobs={getAllJobs} />}
                     </EnhancedTableCell>
                   </TableRow>

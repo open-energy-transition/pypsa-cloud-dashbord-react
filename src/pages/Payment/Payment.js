@@ -6,6 +6,7 @@ import {
   DialogTitle,
   IconButton,
   Typography,
+  Grid,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
@@ -72,29 +73,47 @@ const Payment = ({ jobData, open, setOpen }) => {
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
-        <DialogTitle>
-          Payment
-          <IconButton onClick={handleClose}>
-            <CloseIcon />
-          </IconButton>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <DialogTitle className="backgound_main">
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography variant="h5">Payment</Typography>
+            <IconButton onClick={handleClose}>
+              <CloseIcon
+                sx={{
+                  color: "white",
+                }}
+              />
+            </IconButton>
+          </Grid>
         </DialogTitle>
-        <DialogContent>
-          <Typography variant="body1">this run will cost</Typography>
-          {cost ? (
-            <>
-              <Typography variant="h5">{cost}</Typography>
-              <Button variant="contained" onClick={checkoutHanlder}>
-                checkout
-              </Button>
-            </>
-          ) : (
-            <Typography variant="h5">loading...</Typography>
-          )}
+        <DialogContent className="backgound_main">
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            gap={"1rem"}
+            marginTop={"1.5rem"}
+            marginBottom={"2rem"}
+          >
+            <Typography variant="body1">estimated cost for solving</Typography>
+            {cost ? (
+              <>
+                <Typography variant="h5">{cost}</Typography>
+                <Button variant="contained" onClick={checkoutHanlder}>
+                  checkout
+                </Button>
+              </>
+            ) : (
+              <Typography variant="h5">loading...</Typography>
+            )}
+          </Grid>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-        </DialogActions>
       </Dialog>
     </>
   );

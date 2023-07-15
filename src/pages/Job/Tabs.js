@@ -6,31 +6,20 @@ import Box from "@mui/material/Box";
 import Upload from "./Upload";
 import { UPLOAD_CONFIGS, UPLOAD_CONTENT } from "../../configuration/CONFIG";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import styles from "./Tabs.module.css";
-import { Button } from "@mui/material";
+
+import { Button, Grid } from "@mui/material";
 import axios from "axios";
 import { LoadingButton } from "@mui/lab";
 import { Buffer } from "buffer";
+import { styled } from "@mui/material/styles";
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+const TabPanel = styled(Grid)({
+  minHeight: "580px",
+});
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
+const CheckIcon = styled(TaskAltIcon)({
+  fontSize: "80px",
+});
 
 function a11yProps(index) {
   return {
@@ -81,7 +70,7 @@ export default function BasicTabs({ jobData, setJobData }) {
   }
 
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -95,81 +84,108 @@ export default function BasicTabs({ jobData, setJobData }) {
           <Tab label={UPLOAD_CONFIGS[2]} {...a11yProps(2)} key={2} />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
-        {jobData[onlyfileNames[0]] ? (
-          <div className={styles.tab_layout}>
-            <TaskAltIcon className={styles.icon_layout} />
-            <Typography variant="h4">UPLOADED</Typography>
-            <LoadingButton
-              variant="contained"
-              loading={downloading}
-              onClick={() => {
-                dowload_config(onlyfileNames[0]);
-              }}
+
+      {value == 0 && (
+        <TabPanel container>
+          {jobData[onlyfileNames[0]] ? (
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              gap={3}
             >
-              download config
-            </LoadingButton>
-          </div>
-        ) : (
-          <Upload
-            fileName={UPLOAD_CONFIGS[0]}
-            content={UPLOAD_CONTENT[0]}
-            jobData={jobData}
-            setJobData={setJobData}
-            key={0}
-          />
-        )}
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        {jobData[onlyfileNames[1]] ? (
-          <div className={styles.tab_layout}>
-            <TaskAltIcon className={styles.icon_layout} />
-            <Typography variant="h4">UPLOADED</Typography>
-            <LoadingButton
-              variant="contained"
-              loading={downloading}
-              onClick={() => {
-                dowload_config(onlyfileNames[1]);
-              }}
+              <CheckIcon />
+              <Typography variant="h4">UPLOADED</Typography>
+              <LoadingButton
+                variant="contained"
+                loading={downloading}
+                onClick={() => {
+                  dowload_config(onlyfileNames[0]);
+                }}
+              >
+                download config
+              </LoadingButton>
+            </Grid>
+          ) : (
+            <Upload
+              fileName={UPLOAD_CONFIGS[0]}
+              content={UPLOAD_CONTENT[0]}
+              jobData={jobData}
+              setJobData={setJobData}
+              key={0}
+            />
+          )}
+        </TabPanel>
+      )}
+
+      {value == 1 && (
+        <TabPanel container>
+          {jobData[onlyfileNames[1]] ? (
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              gap={3}
             >
-              download config
-            </LoadingButton>
-          </div>
-        ) : (
-          <Upload
-            fileName={UPLOAD_CONFIGS[1]}
-            content={UPLOAD_CONTENT[1]}
-            jobData={jobData}
-            setJobData={setJobData}
-            key={1}
-          />
-        )}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        {jobData[onlyfileNames[2]] ? (
-          <div className={styles.tab_layout}>
-            <TaskAltIcon className={styles.icon_layout} />
-            <Typography variant="h4">UPLOADED</Typography>
-            <LoadingButton
-              variant="contained"
-              loading={downloading}
-              onClick={() => {
-                dowload_config(onlyfileNames[2]);
-              }}
+              <CheckIcon />
+              <Typography variant="h4">UPLOADED</Typography>
+              <LoadingButton
+                variant="contained"
+                loading={downloading}
+                onClick={() => {
+                  dowload_config(onlyfileNames[1]);
+                }}
+              >
+                download config
+              </LoadingButton>
+            </Grid>
+          ) : (
+            <Upload
+              fileName={UPLOAD_CONFIGS[1]}
+              content={UPLOAD_CONTENT[1]}
+              jobData={jobData}
+              setJobData={setJobData}
+              key={1}
+            />
+          )}
+        </TabPanel>
+      )}
+
+      {value == 2 && (
+        <TabPanel container>
+          {jobData[onlyfileNames[2]] ? (
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              gap={3}
             >
-              download config
-            </LoadingButton>
-          </div>
-        ) : (
-          <Upload
-            fileName={UPLOAD_CONFIGS[2]}
-            content={UPLOAD_CONTENT[2]}
-            jobData={jobData}
-            setJobData={setJobData}
-            key={2}
-          />
-        )}
-      </TabPanel>
+              <CheckIcon />
+              <Typography variant="h4">UPLOADED</Typography>
+              <LoadingButton
+                variant="contained"
+                loading={downloading}
+                onClick={() => {
+                  dowload_config(onlyfileNames[2]);
+                }}
+              >
+                download config
+              </LoadingButton>
+            </Grid>
+          ) : (
+            <Upload
+              fileName={UPLOAD_CONFIGS[2]}
+              content={UPLOAD_CONTENT[2]}
+              jobData={jobData}
+              setJobData={setJobData}
+              key={2}
+            />
+          )}
+        </TabPanel>
+      )}
     </Box>
   );
 }

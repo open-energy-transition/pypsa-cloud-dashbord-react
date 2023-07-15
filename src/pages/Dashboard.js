@@ -4,9 +4,8 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 import { Button, Typography } from "@mui/material";
-import JobsTableCheckbox from "./JobsTableCheckbox";
-import CreateJob from "./CreateJob";
-import { Buffer } from "buffer";
+import JobsTableCheckbox from "./MainTable/JobsTableCheckbox";
+import CreateJob from "./Job/CreateJob";
 
 const Dashboard = () => {
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -59,40 +58,11 @@ const Dashboard = () => {
     });
   }
 
-  function getAllResults() {
-    const user_data_req = axios.create({
-      withCredentials: true,
-      credentials: "include",
-    });
-
-    user_data_req.get("/download/getResults").then((res) => {
-      console.log("res.data: ", res.data);
-
-      const nodeJSBuffer = res.data.zip_buffer;
-
-      const buffer = Buffer.from(nodeJSBuffer);
-      const blob = new Blob([buffer]);
-
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      document.body.appendChild(a);
-      a.style = "display: none";
-      a.href = url;
-      a.download = "filename.zip";
-      a.click();
-      window.URL.revokeObjectURL(url);
-    });
-  }
-
   return (
     <>
       <div className="backgound_main">
         <div className={styles.top_bar}>
-          <Typography
-            variant="h3"
-            color="white"
-            className={styles.conatiner_margin}
-          >
+          <Typography variant="h2" className={styles.conatiner_margin}>
             Dashboard
           </Typography>
           <div
@@ -100,12 +70,8 @@ const Dashboard = () => {
           >
             {user ? (
               <div className={styles.info_container}>
-                <Typography variant="h7" color="white">
-                  {user.name}
-                </Typography>
-                <Typography variant="h7" color="white">
-                  {user.email}
-                </Typography>
+                <Typography variant="h6">{user.name}</Typography>
+                <Typography variant="h6">{user.email}</Typography>
               </div>
             ) : (
               <></>
@@ -115,9 +81,6 @@ const Dashboard = () => {
             </Button>
           </div>
         </div>
-        <Button variant="contained" onClick={getAllResults}>
-          wfw
-        </Button>
         <CreateJob refreshHome={getAllJobs} />
         {jobsData ? (
           <div className={styles.jobs_table_layout}>
@@ -130,12 +93,10 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className={styles.jobs_table_layout}>
-            <Typography variant="h5" color={"white"} gutterBottom>
+            <Typography variant="h5" gutterBottom>
               No Jobs To Display
             </Typography>
-            <Typography variant="h5" color={"white"}>
-              create one!
-            </Typography>
+            <Typography variant="h5">create one!</Typography>
           </div>
         )}
       </div>

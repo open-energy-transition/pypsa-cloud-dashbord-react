@@ -1,6 +1,9 @@
 .top_bar {
   display: flex;
   justify-content: space-between;
+  margin-right: 30px;
+  margin-left: 30px;
+  align-items: center;
 }
 
 .info_container {
