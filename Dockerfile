@@ -10,6 +10,7 @@ COPY . .
 # Build the app
 RUN npm run build
 
+
 # Bundle static assets with nginx
 FROM nginx:1.21.0 as production
 ENV NODE_ENV production
