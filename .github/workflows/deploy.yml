@@ -59,7 +59,7 @@ jobs:
     needs: 
     - build
     - changes
-    if: ${{ always() && ((needs.build.changes.manifests_changed == 'true' && needs.changes.result == 'skippd' ) || needs.changes.result == 'success' ) }} 
+    if: ${{ always() && ((needs.build.changes.manifests_changed == 'true' && needs.build.result == 'skipped' ) || needs.build.result == 'success' ) }} 
     steps:
     - uses: actions/checkout@v3
     - id: 'auth'
