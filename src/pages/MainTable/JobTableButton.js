@@ -41,6 +41,15 @@ const JobTableButton = ({ jobData, getAllJobs }) => {
       });
   }
 
+  function getPypsaComplete() {
+    const a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    a.href = `${process.env.REACT_APP_BASE_BACKEND_URL}/download/getPypsaData?job_id=${jobData._id}`;
+    a.download = "filename.zip";
+    a.click();
+  }
+
   if (jobData.status === "incomplete") {
     return (
       <>
@@ -70,13 +79,25 @@ const JobTableButton = ({ jobData, getAllJobs }) => {
     );
   } else if (jobData.status === "Succeeded") {
     return (
-      <LoadingButton
-        loading={downloading}
-        variant="contained"
-        onClick={getAllResults}
-      >
-        download results
-      </LoadingButton>
+      <>
+        <LoadingButton
+          loading={downloading}
+          variant="contained"
+          onClick={getAllResults}
+        >
+          download results
+        </LoadingButton>
+        <LoadingButton
+          loading={downloading}
+          variant="contained"
+          onClick={getPypsaComplete}
+          sx={{
+            marginTop: "1rem",
+          }}
+        >
+          download pypsa
+        </LoadingButton>
+      </>
     );
   } else {
     return <Typography>{jobData.status}</Typography>;
