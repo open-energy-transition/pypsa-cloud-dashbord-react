@@ -17,7 +17,7 @@ const Login = () => {
       height={"100vh"}
       gap={"3rem"}
     >
-      <Typography variant="h1">PYPSA EARTH</Typography>
+      <Typography variant="h1">PYPSA EARTH !!!!</Typography>
       <Typography variant="h3">Login</Typography>
       <Button onClick={authHandler} variant="contained" size="large">
         Sign Up/ Sign In
