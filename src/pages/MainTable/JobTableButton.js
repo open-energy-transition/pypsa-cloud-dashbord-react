@@ -7,7 +7,6 @@ import { LoadingButton } from "@mui/lab";
 import { Buffer } from "buffer";
 
 const JobTableButton = ({ jobData, getAllJobs }) => {
-  console.log("jobData: ", jobData);
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [payPopupOpen, setPayPopupOpen] = React.useState(false);
   const [downloading, setDownloading] = React.useState(false);
