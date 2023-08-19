@@ -20,30 +20,40 @@ import { Close } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import { FormControl, Select, MenuItem, InputLabel } from "@mui/material";
 import PypsaVersion from "./PypsaVersion";
+import { UPLOAD_CONFIGS } from "../../configuration/CONFIG";
+import { LoadingButton } from "@mui/lab";
+import { Buffer } from "buffer";
+
 const headCells = [
   {
     id: "name",
     label: "Job Name",
+    align: "left",
   },
   {
     id: "pypsa_version",
     label: "PYPSA version",
+    align: "center",
   },
   {
     id: "config",
     label: "config",
+    align: "center",
   },
   {
     id: "bundle_config",
     label: "bundle",
+    align: "center",
   },
   {
     id: "powerplantmatching_config",
     label: "powerplantmatching",
+    align: "center",
   },
   {
     id: "status",
     label: "status",
+    align: "left",
   },
 ];
 
@@ -53,7 +63,7 @@ function EnhancedTableHead(props) {
       <TableRow>
         <TableCell sx={{ width: "2% " }}></TableCell>
         {headCells.map((headCell) => (
-          <EnhancedTableCell key={headCell.id} align={"left"}>
+          <EnhancedTableCell key={headCell.id} align={headCell.align}>
             {headCell.label}
           </EnhancedTableCell>
         ))}
@@ -156,6 +166,49 @@ export default function JobsTableCheckbox({
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
+  const onlyfileNames = UPLOAD_CONFIGS.map((item) => item.split(".")[0]);
+
+  const [dowloadingConfig, setDownloadingConfig] = React.useState([
+    false,
+    false,
+    false,
+  ]);
+
+  function dowload_config(index, row) {
+    setDownloadingConfig((prev) =>
+      prev.map((item, i) => (i === index ? true : item))
+    );
+    const get_config_req = axios.create({
+      withCredentials: true,
+      credentials: "include",
+    });
+
+    get_config_req
+      .get(`/download/getConfig`, {
+        params: { file_name: onlyfileNames[index], job_id: row._id },
+      })
+      .then((res) => {
+        console.log("config data ", res.data);
+
+        const nodeJSBuffer = res.data;
+
+        const buffer = Buffer.from(nodeJSBuffer);
+        const blob = new Blob([buffer]);
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = url;
+        a.download = `${onlyfileNames[index]}.yaml`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        setDownloadingConfig((prev) =>
+          prev.map((item, i) => (i === index ? false : item))
+        );
+      });
+  }
+
   return (
     <Box sx={{ width: "90%" }}>
       <Paper sx={{ width: "100%", backgroundColor: "#132f4c", color: "white" }}>
@@ -207,23 +260,56 @@ export default function JobsTableCheckbox({
                     <EnhancedTableCell>
                       <PypsaVersion row={row} />
                     </EnhancedTableCell>
-                    <EnhancedTableCell align="left">
+                    <EnhancedTableCell align="center">
                       {row.config ? (
-                        <CheckIcon sx={{ fontSize: 30 }} />
+                        <>
+                          <div>
+                            <CheckIcon sx={{ fontSize: 30 }} />
+                          </div>
+                          <LoadingButton
+                            loading={dowloadingConfig[0]}
+                            onClick={() => dowload_config(0, row)}
+                            variant="contained"
+                          >
+                            download
+                          </LoadingButton>
+                        </>
                       ) : (
                         <CloseIcon sx={{ fontSize: 30 }} />
                       )}
                     </EnhancedTableCell>
-                    <EnhancedTableCell align="left">
+                    <EnhancedTableCell align="center">
                       {row.bundle_config ? (
-                        <CheckIcon sx={{ fontSize: 30 }} />
+                        <>
+                          <div>
+                            <CheckIcon sx={{ fontSize: 30 }} />
+                          </div>
+                          <LoadingButton
+                            loading={dowloadingConfig[1]}
+                            onClick={() => dowload_config(1, row)}
+                            variant="contained"
+                          >
+                            download
+                          </LoadingButton>
+                        </>
                       ) : (
                         <CloseIcon sx={{ fontSize: 30 }} />
                       )}
                     </EnhancedTableCell>
-                    <EnhancedTableCell align="left">
+                    <EnhancedTableCell align="center">
                       {row.powerplantmatching_config ? (
-                        <CheckIcon sx={{ fontSize: 30 }} />
+                        <>
+                          <div>
+                            <CheckIcon sx={{ fontSize: 30 }} />
+                          </div>
+                          <LoadingButton
+                            loading={dowloadingConfig[2]}
+                            onClick={() => dowload_config(2, row)}
+                            variant="contained"
+                          >
+                            download
+                          </LoadingButton>
+                        </>
                       ) : (
                         <CloseIcon sx={{ fontSize: 30 }} />
                       )}
